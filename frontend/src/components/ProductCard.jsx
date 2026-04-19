@@ -2,12 +2,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ShoppingCart, Star } from 'lucide-react';
 import { useContext } from 'react';
 import CartContext from '../context/CartContext';
+import { motion } from 'framer-motion';
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useContext(CartContext);
   const navigate = useNavigate();
   return (
-    <div className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl hover:border-primary-100 transition-all duration-500 flex flex-col h-full animate-fade-in">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, type: 'spring', bounce: 0.3 }}
+      whileHover={{ y: -8 }}
+      className="group bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl hover:border-primary-100 transition-all duration-300 flex flex-col h-full"
+    >
       <Link to={`/product/${product._id}`} className="block relative overflow-hidden bg-gray-50 aspect-square">
         <div className="absolute inset-0 bg-primary-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 rounded-t-2xl mix-blend-overlay"></div>
         <img 
@@ -66,7 +74,7 @@ const ProductCard = ({ product }) => {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -3,7 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { ArrowRight, Zap, Target, Shield, Smartphone, Camera, Headphones, Laptop } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
-import Loader from '../components/Loader';
+import SkeletonLoader from '../components/SkeletonLoader';
+import EmptyState from '../components/EmptyState';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -113,16 +114,20 @@ const HomePage = () => {
         </div>
 
         {loading ? (
-          <Loader />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+            {[...Array(8)].map((_, i) => (
+              <SkeletonLoader key={i} />
+            ))}
+          </div>
         ) : error ? (
           <div className="bg-red-50 text-red-600 p-6 rounded-2xl text-center font-medium shadow-sm border border-red-100">{error}</div>
         ) : products.length === 0 ? (
-          <div className="bg-gray-50 text-gray-600 p-12 rounded-2xl text-center font-medium border border-gray-100 flex flex-col items-center">
-            <Target className="w-12 h-12 text-gray-400 mb-4" />
-            <h3 className="text-xl font-bold text-gray-900 mb-2">No Products Found</h3>
-            <p className="mb-6">Try searching for something else or browse our categories.</p>
-            <Link to="/" className="btn-primary">Browse All Products</Link>
-          </div>
+          <EmptyState 
+            title="No Products Found"
+            message="We couldn't find anything matching your search criteria. Try browsing our categories."
+            actionText="Browse Categories"
+            actionLink="/category/all"
+          />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
             {products.map((product) => (
